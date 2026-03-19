@@ -16,7 +16,7 @@ class EventRepository implements CrudContract
 
     public function show(int $id)
     {
-        throw new \Exception('Not implemented');
+        return $this->event->findOrFail($id);
     }
 
     public function store(array $data)
