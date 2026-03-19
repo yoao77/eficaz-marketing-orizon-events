@@ -1,59 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Guia de Instalação e Execução
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Siga os passos abaixo para configurar o ambiente de desenvolvimento local utilizando Docker.
 
-## About Laravel
+### 1. Clonar o Repositório
+```bash
+git clone git@github.com:yoao77/eficaz-marketing-orizon-events.git
+cd eficaz-marketing-orizon-events
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 2. Subir os Containers
+```bash
+docker compose up -d --build
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 3. Configuração da Aplicação (Dentro do Container)
+Acesse o terminal do container para executar os comandos do PHP e Laravel:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+# Entrar no container da aplicação
+docker exec -it orizon_events_app bash
 
-## Learning Laravel
+# Instalar as dependências do projeto
+composer install
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+# Configurar o arquivo de ambiente e gerar a chave
+cp .env.example .env
+php artisan key:generate
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Ajustar permissões (Necessário para WSL2 ou Linux)
+chmod -R 775 storage bootstrap/cache
 
-## Laravel Sponsors
+# Rodar as migrações e popular o banco de dados
+php artisan migrate
+php artisan db:seed
+```
+<br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Acesso à Aplicação
 
-### Premium Partners
+Após subir os containers, você poderá acessar os serviços nos seguintes endereços:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| Serviço        | Endereço                    | Porta |
+|----------------|-----------------------------|-------|
+| **Aplicação** | [http://localhost:8000](http://localhost:8000) | 8000  |
+| **phpMyAdmin** | [http://localhost:8080](http://localhost:8080) | 8080  |
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Credenciais do Banco (Desenvolvimento)
 
-## Code of Conduct
+Caso precise acessar o banco de dados via **phpMyAdmin** ou ferramenta externa (DBeaver/HeidiSQL):
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* **Host:** `mysql` (dentro do Docker) ou `localhost` (fora do Docker)
+* **Database:** `orizon_events`
+* **Usuário:** `root` ou `laravel`
+* **Senha:** `root` ou `laravel`
+* **Porta Local:** `3306` 
+<br>
+<br>
 
-## Security Vulnerabilities
+## Ferramentas de Desenvolvimento
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Para garantir a qualidade do código e a estabilidade da aplicação, você pode utilizar os seguintes comandos configurados:
 
-## License
+### Testes e Cobertura
+* **Rodar Testes (Pest/PHPUnit):**
+    ```bash
+    composer test
+    ```
+* **Verificar Cobertura de Testes:**
+    ```bash
+    composer test:coverage
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Padronização e Análise Estática
+* **Laravel Pint (Linter de Estilo):**
+    ```bash
+    composer pint
+    ```
+    *Utilizado para manter o código seguindo as PSRs e o padrão Laravel.*
+
+* **PHPStan (Análise Estática):**
+    ```bash
+    composer stan
+    ```
+    *Verifica erros de tipagem e lógica sem precisar executar o código.*
