@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->text('description');
             $table->string('location');
             $table->dateTime('event_datetime');
-            $table->integer('people_capacity')->nullable();
+            $table->unsignedBigInteger('people_capacity')->nullable();
             $table->enum('status', ['active', 'canceled'])->default('active');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
