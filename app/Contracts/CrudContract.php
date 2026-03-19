@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 interface CrudContract
 {
-    public function index(array $filters = []);
+    public function index();
 
     public function show(int $id);
 
