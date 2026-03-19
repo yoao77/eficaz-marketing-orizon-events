@@ -21,7 +21,17 @@ class EventRepository implements CrudContract
 
     public function store(array $data)
     {
-        throw new \Exception('Not implemented');
+        $event = $this->event->create([
+            'user_id' => $data['user_id'],
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'location' => $data['location'],
+            'event_datetime' => $data['event_datetime'],
+            'people_capacity' => $data['people_capacity'] ?? null,
+            'status' => $data['status'] ?? 'active',
+        ]);
+
+        return $event;
     }
 
     public function update(int $id, array $data)
