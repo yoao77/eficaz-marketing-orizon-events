@@ -11,7 +11,7 @@ class EventRepository implements CrudContract
 
     public function index()
     {
-        throw new \Exception('Not implemented');
+        return $this->event->orderBy('event_datetime', 'asc')->get();
     }
 
     public function show(int $id)
