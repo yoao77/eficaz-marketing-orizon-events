@@ -51,6 +51,10 @@ class EventRepository implements CrudContract
 
     public function destroy(int $id)
     {
-        throw new \Exception('Not implemented');
+        $event = $this->event->findOrFail($id);
+
+        $event->delete();
+
+        return true;
     }
 }
