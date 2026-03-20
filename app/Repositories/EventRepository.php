@@ -36,17 +36,11 @@ class EventRepository implements CrudContract
 
     public function update(int $id, array $data)
     {
-        $event = $this->event->findOrFail($id);
+        $event = $event = $this->event->where('user_id', $data['user_id'])->findOrFail($id);
 
-        $event->update([
-            'user_id' => $data['user_id'] ?? $event->user_id,
-            'title' => $data['title'] ?? $event->title,
-            'description' => $data['description'] ?? $event->description,
-            'location' => $data['location'] ?? $event->location,
-            'event_datetime' => $data['event_datetime'] ?? $event->event_datetime,
-            'people_capacity' => $data['people_capacity'] ?? $event->people_capacity,
-            'status' => $data['status'] ?? $event->status,
-        ]);
+        $event->update($data); 
+
+        return $event;
     }
 
     public function destroy(int $id)
