@@ -21,7 +21,7 @@
 
         <button title="Subscribed"
             x-data=""
-            x-on:click.prevent="$dispatch('open-modal', 'subscribed-list-{{ $event->id }}')"
+            x-on:click.prevent="$dispatch('open-modal', 'subscribed-list-1111111111111111')"
             class="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -48,20 +48,17 @@
             </svg>
         </button>
 
-        <form action="{{ route('events.destroy', $event->id) }}" method="POST"
-            onsubmit="return confirm('Are you sure you want to delete the event: {{ $event->title }}?')">
-            @csrf
-            @method('DELETE')
-
-            <button type="submit" title="Delete" class="p-2 text-red-600 hover:bg-red-50 rounded-md transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-            </button>
-        </form>
+        <button title="Delete"
+            x-data=""
+            x-on:click.prevent="$dispatch('open-modal', 'confirm-event-deletion-{{ $event->id }}')"
+            class="p-2 text-red-600 hover:bg-red-50 rounded-md transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </button>
     </div>
 
-    <x-modal name="subscribed-list-{{ $event->id }}" maxWidth="sm" focusable>
+    <x-modal name="subscribed-list-1111111111111111" maxWidth="sm" focusable>
         <div class="p-6">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h2 class="text-lg font-bold text-gray-900">
@@ -170,4 +167,29 @@
             </div>
         </div>
     </x-modal>
+
+    <x-modal name="confirm-event-deletion-{{ $event->id }}" focusable>
+    <form method="post" action="{{ route('events.destroy', $event->id) }}" class="p-6">
+        @csrf
+        @method('delete')
+
+        <h2 class="text-lg font-medium text-gray-900">
+            Are you sure you want to delete the event: <span class="font-bold">{{ $event->title }}</span>?
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600">
+            Once this event is deleted, all of its resources and data will be permanently deleted.
+        </p>
+
+        <div class="mt-6 flex justify-end">
+            <x-secondary-button x-on:click="$dispatch('close')">
+                Cancel
+            </x-secondary-button>
+
+            <x-danger-button class="ml-3">
+                Delete Event
+            </x-danger-button>
+        </div>
+    </form>
+</x-modal>
 </div>
