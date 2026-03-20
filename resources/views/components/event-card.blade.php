@@ -28,11 +28,13 @@
             </svg>
         </button>
 
-        <button title="Show" 
-        class="p-2 text-gray-600 hover:bg-gray-50 rounded-md transition">
+        <button title="Show"
+            x-data=""
+            x-on:click.prevent="$dispatch('open-modal', 'show-event-1')"
+            class="p-2 text-gray-600 hover:bg-gray-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
         </button>
 
@@ -41,7 +43,7 @@
                 <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
         </button>
-        
+
         <button title="Delete" class="p-2 text-red-600 hover:bg-red-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -80,6 +82,80 @@
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')">
                     Fechar
+                </x-secondary-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal name="show-event-1" maxWidth="2xl" focusable>
+        <div class="p-8">
+            {{-- Cabeçalho do Modal --}}
+            <div class="flex justify-between items-start border-b border-gray-100 pb-4 mb-6">
+                <div>
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Event Details</span>
+                    <h2 class="text-2xl font-black text-gray-900 mt-1">
+                        {{ $event->title }}
+                    </h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-mono text-gray-400">ID: #00{{ $event->id ?? '1' }}</span>
+                </div>
+            </div>
+
+            {{-- Corpo com Informações --}}
+            <div class="space-y-6">
+                {{-- Descrição --}}
+                <div>
+                    <h4 class="text-sm font-bold text-gray-800 mb-2 uppercase tracking-tight">Description</h4>
+                    <p class="text-gray-600 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        {{ $event->description }}
+                    </p>
+                </div>
+
+                {{-- Grid de Informações Secundárias --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{-- Localização --}}
+                    <div class="flex items-center p-3 border border-gray-100 rounded-lg">
+                        <div class="bg-blue-50 p-2 rounded-lg mr-3 text-xl">📍</div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-gray-400">Location</p>
+                            <p class="text-sm font-semibold text-gray-700">{{ $event->location }}</p>
+                        </div>
+                    </div>
+
+                    {{-- Data e Hora --}}
+                    <div class="flex items-center p-3 border border-gray-100 rounded-lg">
+                        <div class="bg-green-50 p-2 rounded-lg mr-3 text-xl">📅</div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-gray-400">Date & Time</p>
+                            <p class="text-sm font-semibold text-gray-700">10/04/2026 às 14:00</p>
+                        </div>
+                    </div>
+
+                    {{-- Capacidade --}}
+                    <div class="flex items-center p-3 border border-gray-100 rounded-lg">
+                        <div class="bg-purple-50 p-2 rounded-lg mr-3 text-xl">👥</div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-gray-400">Capacity</p>
+                            <p class="text-sm font-semibold text-gray-700">{{ $event->people_capacity ?? '50' }} people max.</p>
+                        </div>
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="flex items-center p-3 border border-gray-100 rounded-lg">
+                        <div class="bg-orange-50 p-2 rounded-lg mr-3 text-xl">✨</div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-gray-400">Status</p>
+                            <p class="text-sm font-semibold text-gray-700 uppercase tracking-wide">{{ $event->status }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Footer do Modal --}}
+            <div class="mt-10 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')" class="px-6">
+                    Close Details
                 </x-secondary-button>
             </div>
         </div>
