@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use App\Services\EventService;
 
 class EventController extends Controller 
@@ -40,9 +41,23 @@ class EventController extends Controller
             ->withErrors(['error' => 'Could not create event']);
     }
 
-    public function update(int $id, array $data)
+    public function update(UpdateEventRequest $request, int $id)
     {
-        throw new \Exception('Not implemented');
+        $data = $request->validated();
+
+        $data['user_id'] = auth()->user()->id;
+
+        $event = $this->service->update($id, $data);
+
+        if ($event) {
+            return redirect()
+                ->route('events.index')
+                ->with('success', 'Event updated successfully!');
+        }
+
+        return back()
+            ->withInput()
+            ->withErrors(['error' => 'Unable to update the event.']);
     }
 
     public function destroy(int $id)
