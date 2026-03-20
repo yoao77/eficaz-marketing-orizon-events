@@ -1,32 +1,24 @@
-<div class="container-fluid pt-4">
-    <div class="row">
-        <aside class="col-md-3 col-lg-2 mb-4">
-            <div class="list-group shadow-sm">
-                <div class="list-group-item bg-light border-bottom-0">
-                    <span class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 0.05rem;">
-                        Events
-                    </span>
-                </div>
-
-                <a href="{{ route('dashboard') }}" 
-                   class="list-group-item list-group-item-action {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <i class="bi bi-calendar-event me-2"></i> My
-                </a>
-
-                <a href="#" 
-                   class="list-group-item list-group-item-action {{ request()->routeIs('events.global') ? 'active' : '' }}">
-                    <i class="bi bi-search me-2"></i> Global
-                </a>
-
-                <a href="#" 
-                   class="list-group-item list-group-item-action {{ request()->routeIs('events.subscribed') ? 'active' : '' }}">
-                    <i class="bi bi-bookmark-check me-2"></i> Subscribed
-                </a>
-            </div>
-        </aside>
-
-        <main class="col-md-9 col-lg-10">
-             {{ $slot }}
-        </main>
+<div class="w-full flex flex-col p-4">
+    <div class="mb-4 px-2">
+        <span class="text-uppercase font-bold text-gray-400 text-[0.7rem] tracking-widest uppercase">
+            Events
+        </span>
     </div>
+
+    <nav class="space-y-1">
+        <a href="{{ route('dashboard') }}" 
+           class="flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100' }}">
+            <i class="bi bi-calendar-event mr-3"></i> My
+        </a>
+
+        <a href="#" 
+           class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+            <i class="bi bi-search mr-3"></i> Global
+        </a>
+
+        <a href="#" 
+           class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+            <i class="bi bi-bookmark-check mr-3"></i> Subscribed
+        </a>
+    </nav>
 </div>
