@@ -87,5 +87,46 @@
             </div>
         </form>
     </x-modal>
+
+    {{-- FILTER MODAL --}}
+    <x-modal name="filter-modal" maxWidth="md">
+        <form action="{{ route('dashboard') }}" method="GET" class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-6 border-b pb-2">Filter Events</h2>
+
+            <div class="space-y-4">
+                {{-- Status --}}
+                <div>
+                    <x-input-label for="filter_status" value="Status" />
+                    <select name="status" id="filter_status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <option value="">All Statuses</option>
+                        <option value="active">Active Only</option>
+                        <option value="canceled">Canceled Only</option>
+                    </select>
+                </div>
+
+                {{-- Date Range --}}
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <x-input-label for="date_from" value="From Date" />
+                        <x-text-input id="date_from" name="date_from" type="date" class="mt-1 block w-full" />
+                    </div>
+                    <div>
+                        <x-input-label for="date_to" value="To Date" />
+                        <x-text-input id="date_to" name="date_to" type="date" class="mt-1 block w-full" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-col gap-2">
+                <x-primary-button class="w-full justify-center py-3">
+                    Apply Filters
+                </x-primary-button>
+                <a href="{{ route('dashboard') }}" class="text-center text-sm text-gray-500 hover:text-indigo-600 transition-colors">
+                    Clear Filters
+                </a>
+            </div>
+        </form>
+    </x-modal>
+
 </x-app-layout>
 
