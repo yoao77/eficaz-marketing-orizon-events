@@ -131,34 +131,50 @@
 </x-app-layout>
 
 <script>
-    const eventForm = document.getElementById('eventForm');
-    const methodPut = document.getElementById('methodPut');
+    // Usamos o DOMContentLoaded para garantir que o formulário já exista na tela
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Definimos as funções no escopo global (window) para o botão do card achar
+        window.setupCreateModal = function() {
+            const eventForm = document.getElementById('eventForm');
+            const methodPut = document.getElementById('methodPut');
+            
+            document.getElementById('eventModalLabel').innerText = 'Create New Event';
+            eventForm.action = "/events";
+            methodPut.innerHTML = '';
+            eventForm.reset();
+            
+            window.dispatchEvent(new CustomEvent('open-modal', { detail: 'event-modal' }));
+        }
 
-    function setupCreateModal() {
-        document.getElementById('eventModalLabel').innerText = 'Create New Event';
+        window.setupEditModal = function(event) {
+            const eventForm = document.getElementById('eventForm');
+            const methodPut = document.getElementById('methodPut');
 
-        eventForm.action = "/events";
+            document.getElementById('eventModalLabel').innerText = 'Edit: ' + event.title;
+            eventForm.action = `/events/${event.id}`;
+            methodPut.innerHTML = '<input type="hidden" name="_method" value="PUT">';
 
-        methodPut.innerHTML = '';
-        eventForm.reset();
-        window.dispatchEvent(new CustomEvent('open-modal', {
-            detail: 'event-modal'
-        }));
-    }
+            // Preenchimento dos campos
+            document.getElementById('title').value = event.title || '';
+            document.getElementById('description').value = event.description || '';
+            document.getElementById('location').value = event.location || '';
 
-    function setupEditModal(event) {
-        document.getElementById('eventModalLabel').innerText = 'Edit: ' + event.title;
-        eventForm.action = `/events/${event.id}`;
-        methodPut.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            // Tratamento da data para o input datetime-local
+            const dataHora = event.event_datetime || event.date_time || '';
+            if (dataHora) {
+                document.getElementById('event_datetime').value = dataHora.replace(' ', 'T').slice(0, 16);
+            }
 
-        document.getElementById('title').value = event.title;
-        document.getElementById('description').value = event.description;
-        document.getElementById('location').value = event.location;
-        document.getElementById('date_time').value = event.date_time.replace(' ', 'T');
+            // Preenche capacidade e status se existirem no objeto
+            if(document.getElementById('people_capacity')) {
+                document.getElementById('people_capacity').value = event.people_capacity || '';
+            }
+            if(document.getElementById('status')) {
+                document.getElementById('status').value = event.status || 'active';
+            }
 
-        window.dispatchEvent(new CustomEvent('open-modal', {
-            detail: 'event-modal'
-        }));
-    }
-
+            window.dispatchEvent(new CustomEvent('open-modal', { detail: 'event-modal' }));
+        }
+    });
 </script>
