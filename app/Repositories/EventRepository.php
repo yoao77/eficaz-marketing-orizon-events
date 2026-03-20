@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Contracts\CrudContract;
+use App\Contracts\EventRepositoryContract;
 use App\Models\Event;
 
-class EventRepository implements CrudContract
+class EventRepository implements EventRepositoryContract 
 {
     public function __construct(private Event $event) {}
 

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Contracts\CrudContract;
+use App\Contracts\EventRepositoryContract;
 use App\Repositories\EventRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CrudContract::class, EventRepository::class);
+        $this->app->bind(EventRepositoryContract::class, EventRepository::class);
     }
 
     /**

@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Contracts\CrudContract;
+use App\Contracts\EventRepositoryContract;
 
 class EventService
 {
-    public function __construct(private CrudContract $repository) {}
+    public function __construct(private EventRepositoryContract $repository) {}
 
     public function index()
     {

@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-interface CrudContract
+interface EventRepositoryContract
 {
     public function index();
 
