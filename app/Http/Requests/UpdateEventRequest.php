@@ -31,4 +31,19 @@ class UpdateEventRequest extends FormRequest
             'status' => 'required|in:active,canceled',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'The event title is required for updates.',
+            'description.required' => 'Please provide a description for the event.',
+            'location.required' => 'A location must be specified.',
+            'event_datetime.required' => 'The date and time are required.',
+            'event_datetime.after_or_equal' => 'The event cannot be scheduled for a past date.',
+            'people_capacity.integer' => 'Capacity must be a valid number.',
+            'people_capacity.min' => 'Capacity must be at least 1 person.',
+            'status.required' => 'The event status is required.',
+            'status.in' => 'Selected status is invalid.',
+        ];
+    }
 }
