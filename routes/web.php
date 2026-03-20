@@ -17,4 +17,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('/my-events', function () {
+    $events = [
+        (object)[
+            'title' => 'Conferência Biohit 2026',
+            'description' => 'Discussão sobre relatórios automatizados e integração com Excel.',
+            'location' => 'São Paulo, SP',
+            'date_time' => '2026-05-20 09:00:00',
+            'status' => 'active'
+        ],
+        (object)[
+            'title' => 'Data Sloth Workshop',
+            'description' => 'Treinamento prático de ingestão de dados com Kafka.',
+            'location' => 'Remoto',
+            'date_time' => '2026-06-15 14:30:00',
+            'status' => 'pending'
+        ],
+    ];
+
+    return view('events.index', compact('events'));
+})->middleware(['auth']);
+
+
+
+require __DIR__ . '/auth.php';
