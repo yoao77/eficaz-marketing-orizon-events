@@ -21,7 +21,7 @@
                 <x-event-card :event="$event" />
                 @empty
                 <div class="col-span-full bg-white p-12 rounded-xl text-center border-2 border-dashed border-gray-200">
-                    <p class="text-gray-500">Nenhum evento encontrado.</p>
+                    <p class="text-gray-500">No events found.</p>
                 </div>
                 @endforelse
             </div>
@@ -130,3 +130,35 @@
 
 </x-app-layout>
 
+<script>
+    const eventForm = document.getElementById('eventForm');
+    const methodPut = document.getElementById('methodPut');
+
+    function setupCreateModal() {
+        document.getElementById('eventModalLabel').innerText = 'Create New Event';
+
+        eventForm.action = "/events";
+
+        methodPut.innerHTML = '';
+        eventForm.reset();
+        window.dispatchEvent(new CustomEvent('open-modal', {
+            detail: 'event-modal'
+        }));
+    }
+
+    function setupEditModal(event) {
+        document.getElementById('eventModalLabel').innerText = 'Edit: ' + event.title;
+        eventForm.action = `/events/${event.id}`;
+        methodPut.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+
+        document.getElementById('title').value = event.title;
+        document.getElementById('description').value = event.description;
+        document.getElementById('location').value = event.location;
+        document.getElementById('date_time').value = event.date_time.replace(' ', 'T');
+
+        window.dispatchEvent(new CustomEvent('open-modal', {
+            detail: 'event-modal'
+        }));
+    }
+
+</script>
