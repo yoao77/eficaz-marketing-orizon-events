@@ -38,6 +38,4 @@ Route::get('/my-events', function () {
     return view('events.index', compact('events'));
 })->middleware(['auth']);
 
-
-
 require __DIR__ . '/auth.php';
