@@ -1,4 +1,13 @@
 <x-app-layout>
+
+    @if (session('success'))
+        <x-toast type="success" :message="session('success')" />
+    @endif
+
+    @if ($errors->any())
+        <x-toast type="error" :message="$errors->all()" />
+    @endif
+
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-bold text-2xl text-gray-800 leading-tight">My Events</h2>
@@ -127,7 +136,6 @@
             </div>
         </form>
     </x-modal>
-
 </x-app-layout>
 
 <script>
