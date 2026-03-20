@@ -25,7 +25,7 @@ class EventController extends Controller
     {
         $data = $request->validated();
 
-        $data['user_id'] = authUser()->id;
+        $data['user_id'] = auth()->user()->id;
 
         $event = $this->service->store($data);
 
