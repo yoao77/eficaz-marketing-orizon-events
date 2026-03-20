@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\CrudContract;
+use App\Http\Requests\StoreEventRequest;
 use App\Services\EventService;
 
 class EventController extends Controller 
@@ -15,15 +15,29 @@ class EventController extends Controller
 
         return view('events.index', compact('events'));
     }
-    
+
     public function show(int $id)
     {
         throw new \Exception('Not implemented');
     }
 
-    public function store(array $data)
+    public function store(StoreEventRequest $request)
     {
-        throw new \Exception('Not implemented');
+        $data = $request->validated();
+
+        $data['user_id'] = authUser()->id;
+
+        $event = $this->service->store($data);
+
+        if ($event) {
+            return redirect()
+                ->back()
+                ->with('success', 'Event created with success!');
+        }
+
+        return back()
+            ->withInput()
+            ->withErrors(['error' => 'Could not create event']);
     }
 
     public function update(int $id, array $data)
