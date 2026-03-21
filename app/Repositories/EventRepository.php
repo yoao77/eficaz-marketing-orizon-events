@@ -9,7 +9,7 @@ class EventRepository implements EventRepositoryContract
 {
     public function __construct(private Event $event) {}
 
-    public function index(array $filters = [], int $authUserId)
+    public function index(array $filters = [], ?int $authUserId)
     {
         $query = $this->event->query();
 
