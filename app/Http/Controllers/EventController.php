@@ -6,7 +6,7 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Services\EventService;
 
-class EventController extends Controller 
+class EventController extends Controller
 {
     public function __construct(private EventService $service) {}
 
@@ -62,6 +62,22 @@ class EventController extends Controller
 
     public function destroy(int $id)
     {
-        throw new \Exception('Not implemented');
+        try {
+            $userId = auth()->id();
+
+            $this->service->destroy($id, $userId);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Event deleted successfully!');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Event not found.']);
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
+        }
     }
 }

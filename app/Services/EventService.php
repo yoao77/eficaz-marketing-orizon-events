@@ -28,8 +28,8 @@ class EventService
         return $this->repository->update($id, $data);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id, int $userId)
     {
-        return $this->repository->destroy($id);
+        return $this->repository->destroy($id, $userId);
     }
 }

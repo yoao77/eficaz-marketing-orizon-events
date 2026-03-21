@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Contracts\EventRepositoryContract;
 use App\Models\Event;
 
-class EventRepository implements EventRepositoryContract 
+class EventRepository implements EventRepositoryContract
 {
     public function __construct(private Event $event) {}
 
@@ -36,19 +36,16 @@ class EventRepository implements EventRepositoryContract
 
     public function update(int $id, array $data)
     {
-        $event = $event = $this->event->where('user_id', $data['user_id'])->findOrFail($id);
+        $event = $this->event->where('user_id', $data['user_id'])->findOrFail($id);
 
-        $event->update($data); 
+        $event->update($data);
 
         return $event;
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id, int $userId)
     {
-        $event = $this->event->findOrFail($id);
-
-        $event->delete();
-
-        return true;
+        $event = $this->event->where('user_id', $userId)->findOrFail($id);
+        return $event->delete();
     }
 }
