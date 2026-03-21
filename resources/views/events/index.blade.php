@@ -1,26 +1,54 @@
 <x-app-layout>
 
     @if (session('success'))
-        <x-toast type="success" :message="session('success')" />
+    <x-toast type="success" :message="session('success')" />
     @endif
 
     @if ($errors->any())
-        <x-toast type="error" :message="$errors->all()" />
+    <x-toast type="error" :message="$errors->all()" />
     @endif
 
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-bold text-2xl text-gray-800 leading-tight">My Events</h2>
-            <div class="flex space-x-3">
-                <x-secondary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'filter-modal')">
-                    {{ __('Filter') }}
-                </x-secondary-button>
+        {{-- Topo: Título e Botão de Criar --}}
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                {{-- Título dinâmico baseado no filtro --}}
+                @if(request('filter') === 'mine')
+                {{ __('My Events') }}
+                @elseif(request('filter') === 'subscribed')
+                {{ __('My Subscriptions') }}
+                @else
+                {{ __('All Events') }}
+                @endif
+            </h2>
 
+            <div class="flex space-x-3">
                 <x-primary-button x-data="" x-on:click.prevent="setupCreateModal()">
                     {{ __('Create Event') }}
                 </x-primary-button>
             </div>
         </div>
+
+        {{-- Linha de Baixo: Navegação por Tabs --}}
+        <nav class="flex space-x-8 border-b border-gray-100">
+            <x-tab-item
+                :href="route('events.index')"
+                :active="!request('filter')">
+                {{ __('All') }}
+            </x-tab-item>
+
+            <x-tab-item
+                :href="route('events.index', ['filter' => 'mine'])"
+                :active="request('filter') === 'mine'">
+                {{ __('My Events') }}
+            </x-tab-item>
+
+            <x-tab-item
+                :href="route('events.index', ['filter' => 'subscribed'])"
+                :active="request('filter') === 'subscribed'">
+                {{ __('Subscribed') }}
+            </x-tab-item>
+        </nav>
     </x-slot>
 
     <div class="py-12">
@@ -141,18 +169,20 @@
 <script>
     // Usamos o DOMContentLoaded para garantir que o formulário já exista na tela
     document.addEventListener('DOMContentLoaded', function() {
-        
+
         // Definimos as funções no escopo global (window) para o botão do card achar
         window.setupCreateModal = function() {
             const eventForm = document.getElementById('eventForm');
             const methodPut = document.getElementById('methodPut');
-            
+
             document.getElementById('eventModalLabel').innerText = 'Create New Event';
             eventForm.action = "/events";
             methodPut.innerHTML = '';
             eventForm.reset();
-            
-            window.dispatchEvent(new CustomEvent('open-modal', { detail: 'event-modal' }));
+
+            window.dispatchEvent(new CustomEvent('open-modal', {
+                detail: 'event-modal'
+            }));
         }
 
         window.setupEditModal = function(event) {
@@ -175,14 +205,16 @@
             }
 
             // Preenche capacidade e status se existirem no objeto
-            if(document.getElementById('people_capacity')) {
+            if (document.getElementById('people_capacity')) {
                 document.getElementById('people_capacity').value = event.people_capacity || '';
             }
-            if(document.getElementById('status')) {
+            if (document.getElementById('status')) {
                 document.getElementById('status').value = event.status || 'active';
             }
 
-            window.dispatchEvent(new CustomEvent('open-modal', { detail: 'event-modal' }));
+            window.dispatchEvent(new CustomEvent('open-modal', {
+                detail: 'event-modal'
+            }));
         }
     });
 </script>
