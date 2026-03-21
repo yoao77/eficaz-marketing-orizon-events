@@ -26,7 +26,7 @@ class EventController extends Controller
     {
         $data = $request->validated();
 
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = auth()->id;
 
         $event = $this->service->store($data);
 
@@ -43,21 +43,25 @@ class EventController extends Controller
 
     public function update(UpdateEventRequest $request, int $id)
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        $data['user_id'] = auth()->user()->id;
+            $data['user_id'] = auth()->id();
 
-        $event = $this->service->update($id, $data);
+            $event = $this->service->update($id, $data);
 
-        if ($event) {
             return redirect()
                 ->route('events.index')
                 ->with('success', 'Event updated successfully!');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Event not found.']);
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'An unexpected error occurred while updating the event.']);
         }
-
-        return back()
-            ->withInput()
-            ->withErrors(['error' => 'Unable to update the event.']);
     }
 
     public function destroy(int $id)
