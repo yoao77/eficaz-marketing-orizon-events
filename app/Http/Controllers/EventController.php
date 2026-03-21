@@ -53,7 +53,7 @@ class EventController extends Controller
 
             if ($event) {
                 return redirect()
-                    ->route('events.index')
+                    ->back()
                     ->with('success', 'Event updated successfully!');
             }
         } catch (ModelNotFoundException $e) {
