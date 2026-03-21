@@ -70,5 +70,6 @@
     <x-events.show-modal />
     <x-events.subscribers-modal />
     <x-events.delete-modal />
+    <x-events.subscribe-modal />
 
 </x-app-layout>
