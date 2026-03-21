@@ -21,12 +21,15 @@
                 {{ __('All Events') }}
                 @endif
             </h2>
-
+        
+        @if(request('filter') === 'mine')
             <div class="flex space-x-3">
                 <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'create-event-modal')">
                     {{ __('Create Event') }}
                 </x-primary-button>
             </div>
+        @endif
+
         </div>
 
         {{-- Linha de Baixo: Navegação por Tabs --}}
