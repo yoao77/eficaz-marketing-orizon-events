@@ -9,17 +9,17 @@ class EventRepository implements EventRepositoryContract
 {
     public function __construct(private Event $event) {}
 
-    public function index(array $filters = [], int $userId)
+    public function index(array $filters = [], int $authUserId)
     {
         $query = $this->event->query();
 
         if (isset($filters['filter']) && $filters['filter'] === 'mine') {
-            $query->where('user_id', $userId);
+            $query->where('user_id', $authUserId);
         }
 
         if (isset($filters['filter']) && $filters['filter'] === 'subscribed') {
-            $query->whereHas('participants', function ($q) use ($userId) {
-                $q->where('user_id', $userId);
+            $query->whereHas('participants', function ($q) use ($authUserId) {
+                $q->where('user_id', $authUserId);
             });
         }
 
@@ -35,10 +35,10 @@ class EventRepository implements EventRepositoryContract
         return $this->event->findOrFail($id);
     }
 
-    public function store(array $data)
+    public function store(array $data, int $authUserId)
     {
         $event = $this->event->create([
-            'user_id' => $data['user_id'],
+            'user_id' => $authUserId,
             'title' => $data['title'],
             'description' => $data['description'],
             'location' => $data['location'],
@@ -50,18 +50,18 @@ class EventRepository implements EventRepositoryContract
         return $event;
     }
 
-    public function update(int $id, array $data)
+    public function update(array $data, int $id, int $authUserId)
     {
-        $event = $this->event->where('user_id', $data['user_id'])->findOrFail($id);
+        $event = $this->event->where('user_id', $authUserId)->findOrFail($id);
 
         $event->update($data);
 
         return $event;
     }
 
-    public function destroy(int $id, int $userId)
+    public function destroy(int $id, int $authUserId)
     {
-        $event = $this->event->where('user_id', $userId)->findOrFail($id);
+        $event = $this->event->where('user_id', $authUserId)->findOrFail($id);
         return $event->delete();
     }
 }

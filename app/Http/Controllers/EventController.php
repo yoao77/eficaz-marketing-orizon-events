@@ -15,9 +15,9 @@ class EventController extends Controller
     {
         $filters = $request->only(['filter']);
         
-        $userId = auth()->id();
+        $authUserId = auth()->id();
 
-        $events = $this->service->index($filters, $userId);
+        $events = $this->service->index($filters, $authUserId);
 
         return view('events.index', compact('events'));
     }
@@ -26,9 +26,9 @@ class EventController extends Controller
     {
         $data = $request->validated();
 
-        $data['user_id'] = auth()->id();
+        $authUserId = auth()->id();
 
-        $event = $this->service->store($data);
+        $event = $this->service->store($data, $authUserId);
 
         if ($event) {
             return redirect()
@@ -46,13 +46,15 @@ class EventController extends Controller
         try {
             $data = $request->validated();
 
-            $data['user_id'] = auth()->id();
+            $authUserId = auth()->id();
 
-            $event = $this->service->update($id, $data);
+            $event = $this->service->update($data, $id, $authUserId);
 
-            return redirect()
-                ->route('events.index')
-                ->with('success', 'Event updated successfully!');
+            if ($event) {
+                return redirect()
+                    ->route('events.index')
+                    ->with('success', 'Event updated successfully!');
+            }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return back()
                 ->withInput()
@@ -67,9 +69,9 @@ class EventController extends Controller
     public function destroy(int $id)
     {
         try {
-            $userId = auth()->id();
+            $authUserId = auth()->id();
 
-            $this->service->destroy($id, $userId);
+            $this->service->destroy($id, $authUserId);
 
             return redirect()
                 ->back()

@@ -8,23 +8,23 @@ class EventService
 {
     public function __construct(private EventRepositoryContract $repository) {}
 
-    public function index(array $filters = [], $userId)
+    public function index(array $filters = [], $authUserId)
     {
-        return $this->repository->index($filters, $userId);
+        return $this->repository->index($filters, $authUserId);
     }
 
-    public function store(array $data)
+    public function store(array $data, int $authUserId)
     {
-        return $this->repository->store($data);
+        return $this->repository->store($data, $authUserId);
     }
 
-    public function update(int $id, array $data)
+    public function update(array $data, int $id, int $authUserId)
     {
-        return $this->repository->update($id, $data);
+        return $this->repository->update($data, $id, $authUserId);
     }
 
-    public function destroy(int $id, int $userId)
+    public function destroy(int $id, int $authUserId)
     {
-        return $this->repository->destroy($id, $userId);
+        return $this->repository->destroy($id, $authUserId);
     }
 }
