@@ -27,7 +27,13 @@
                     <x-text-input id="create_event_datetime" name="event_datetime" type="datetime-local" class="mt-1 block w-full" :value="old('event_datetime')" required />
                 </div>
             </div>
-             
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <x-input-label for="people_capacity" value="People Capacity" />
+                    <x-text-input id="people_capacity" name="people_capacity" type="number" min="1" class="mt-1 block w-full" />
+                </div>
+            </div>
         </div>
 
         <div class="mt-6 flex justify-end">
