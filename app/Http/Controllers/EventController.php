@@ -22,11 +22,6 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
-    public function show(int $id)
-    {
-        throw new \Exception('Not implemented');
-    }
-
     public function store(StoreEventRequest $request)
     {
         $data = $request->validated();

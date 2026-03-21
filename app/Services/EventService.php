@@ -13,11 +13,6 @@ class EventService
         return $this->repository->index($filters, $userId);
     }
 
-    public function show(int $id)
-    {
-        return $this->repository->show($id);
-    }
-
     public function store(array $data)
     {
         return $this->repository->store($data);
