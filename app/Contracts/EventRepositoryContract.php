@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 interface EventRepositoryContract
 {
-    public function index();
+    public function index(array $filters = [], int $userId);
 
     public function show(int $id);
 

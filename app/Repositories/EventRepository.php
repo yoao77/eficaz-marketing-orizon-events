@@ -9,9 +9,25 @@ class EventRepository implements EventRepositoryContract
 {
     public function __construct(private Event $event) {}
 
-    public function index()
+    public function index(array $filters = [], int $userId)
     {
-        return $this->event->orderBy('event_datetime', 'asc')->get();
+        $query = $this->event->query();
+
+        if (isset($filters['filter']) && $filters['filter'] === 'mine') {
+            $query->where('user_id', $userId);
+        }
+
+        if (isset($filters['filter']) && $filters['filter'] === 'subscribed') {
+            $query->whereHas('participants', function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            });
+        }
+
+        if (empty($filters['filter']) || $filters['filter'] === 'all') {
+            $query->where('event_datetime', '>=', now());
+        }
+
+        return $query->orderBy('event_datetime', 'asc')->get();
     }
 
     public function show(int $id)

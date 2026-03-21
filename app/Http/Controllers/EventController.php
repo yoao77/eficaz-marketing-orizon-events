@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Services\EventService;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     public function __construct(private EventService $service) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $events = $this->service->index();
+        $filters = $request->only(['filter']);
+        
+        $userId = auth()->id();
+
+        $events = $this->service->index($filters, $userId);
 
         return view('events.index', compact('events'));
     }
@@ -26,7 +31,7 @@ class EventController extends Controller
     {
         $data = $request->validated();
 
-        $data['user_id'] = auth()->id;
+        $data['user_id'] = auth()->id();
 
         $event = $this->service->store($data);
 

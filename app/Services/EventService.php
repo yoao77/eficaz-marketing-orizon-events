@@ -8,9 +8,9 @@ class EventService
 {
     public function __construct(private EventRepositoryContract $repository) {}
 
-    public function index()
+    public function index(array $filters = [], $userId)
     {
-        return $this->repository->index();
+        return $this->repository->index($filters, $userId);
     }
 
     public function show(int $id)
