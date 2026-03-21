@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Services\EventService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -14,7 +15,7 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['filter']);
-        
+
         $authUserId = auth()->id();
 
         $events = $this->service->index($filters, $authUserId);
@@ -55,7 +56,7 @@ class EventController extends Controller
                     ->route('events.index')
                     ->with('success', 'Event updated successfully!');
             }
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'Event not found.']);
@@ -76,14 +77,14 @@ class EventController extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Event deleted successfully!');
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return redirect()
                 ->back()
                 ->withErrors(['error' => 'Event not found.']);
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'An unexpected error occurred: '.$e->getMessage()]);
         }
     }
 }

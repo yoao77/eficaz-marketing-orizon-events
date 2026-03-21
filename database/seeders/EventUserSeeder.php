@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EventUserSeeder extends Seeder
@@ -19,6 +18,7 @@ class EventUserSeeder extends Seeder
 
         if ($events->isEmpty() || $users->isEmpty()) {
             $this->command->info('Run UserSeeder and EventSeeder first!');
+
             return;
         }
 

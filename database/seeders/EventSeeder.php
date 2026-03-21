@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Event;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EventSeeder extends Seeder
@@ -19,6 +18,7 @@ class EventSeeder extends Seeder
 
         if ($users->count() < 1) {
             $this->command->info('No users found. Run UserSeeder first!');
+
             return;
         }
 

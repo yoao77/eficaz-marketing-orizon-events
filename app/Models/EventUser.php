@@ -16,11 +16,11 @@ class EventUser extends Model
         'user_id',
     ];
 
-    //protected $dates = [
+    // protected $dates = [
     //    'created_at',
     //    'updated_at',
     //    'deleted_at',
-    //];
+    // ];
 
     public function event()
     {

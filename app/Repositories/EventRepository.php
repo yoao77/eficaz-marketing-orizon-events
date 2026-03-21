@@ -9,7 +9,7 @@ class EventRepository implements EventRepositoryContract
 {
     public function __construct(private Event $event) {}
 
-    public function index(array $filters = [], ?int $authUserId)
+    public function index(array $filters, ?int $authUserId)
     {
         $query = $this->event->query();
 
@@ -62,6 +62,7 @@ class EventRepository implements EventRepositoryContract
     public function destroy(int $id, int $authUserId)
     {
         $event = $this->event->where('user_id', $authUserId)->findOrFail($id);
+
         return $event->delete();
     }
 }

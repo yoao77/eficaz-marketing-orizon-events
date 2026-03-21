@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
@@ -25,18 +28,18 @@ class Event extends Model
         'people_capacity' => 'integer',
     ];
 
-    public function creator()
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function participants()
+    public function participants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'event_user', 'event_id', 'user_id')
             ->withTimestamps();
     }
 
-    public function eventUsers()
+    public function eventUsers(): HasMany
     {
         return $this->hasMany(EventUser::class, 'event_id');
     }

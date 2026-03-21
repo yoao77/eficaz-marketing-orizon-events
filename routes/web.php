@@ -18,11 +18,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('events', EventController::class)->names([
-        'index'   => 'events.index',
-        'store'   => 'events.store',
-        'update'  => 'events.update',
+        'index' => 'events.index',
+        'store' => 'events.store',
+        'update' => 'events.update',
         'destroy' => 'events.destroy',
     ]);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
