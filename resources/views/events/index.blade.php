@@ -51,6 +51,13 @@
         </nav>
     </x-slot>
 
+    <div class="mb-4 p-4 bg-blue-50 dark:bg-gray-800 rounded-lg flex justify-between items-center shadow-sm border border-blue-100 dark:border-gray-700">
+        <span class="text-sm font-medium text-blue-800 dark:text-blue-300">
+            Total events rendered on this page: <span id="js-event-count" class="font-bold">0</span>
+        </span>
+        <span id="js-clock" class="text-xs text-blue-600 dark:text-gray-400 font-mono"></span>
+    </div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -74,3 +81,25 @@
     <x-events.unsubscribe-modal />
 
 </x-app-layout>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const eventCards = document.querySelectorAll('.event-card-container');
+        const countDisplay = document.getElementById('js-event-count');
+        
+        if(countDisplay) {
+            countDisplay.innerText = eventCards.length;
+        }
+
+        const clockDisplay = document.getElementById('js-clock');
+        
+        setInterval(() => {
+            const now = new Date();
+            clockDisplay.innerText = '🕒 ' + now.toLocaleTimeString();
+        }, 1000);
+        
+        console.log('Pure JavaScript: Count and Clock started!');
+    });
+</script>

@@ -1,6 +1,6 @@
 @props(['event', 'view' => 'all'])
 
-<div x-data="{}" class="bg-white shadow-sm rounded-lg p-6 border border-gray-100 flex flex-col justify-between h-full">
+<div x-data="{}" class="bg-white shadow-sm rounded-lg p-6 border border-gray-100 flex flex-col justify-between h-full event-card-container">
     <div>
         <div class="flex justify-between items-start mb-2">
             <h3 class="text-lg font-bold text-gray-900">{{ $event->title }}</h3>
