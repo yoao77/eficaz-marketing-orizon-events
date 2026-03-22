@@ -43,4 +43,9 @@ class Event extends Model
     {
         return $this->hasMany(EventUser::class, 'event_id');
     }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active' && $this->event_datetime > now();
+    }
 }
