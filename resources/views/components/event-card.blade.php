@@ -22,13 +22,19 @@
         {{-- CASO 1: MINE (Filtro Meus Eventos) - Mantém seus 4 botões originais --}}
         @if(request('filter') === 'mine')
         {{-- 1. Subscribed (Azul) --}}
-        <button title="Subscribed"
-            x-on:click="$dispatch('open-subscribers-modal', @js($event))"
-            class="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-        </button>
+        <button title="Subscribers"
+    x-on:click="
+        fetch('/events/{{ $event->id }}/subscribers')
+            .then(res => res.json())
+            .then(data => $dispatch('open-subscribers-modal', data))
+    "
+    class="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition">
+    
+    {{-- O ícone precisa ficar AQUI dentro --}}
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+</button> 
 
         {{-- 2. Show (Cinza) --}}
         <button title="Show"

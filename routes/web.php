@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'events.destroy',
     ]);
 
+    Route::get('/events/{event}/subscribers', [SubscriptionController::class, 'getSubscribers']);
     Route::post('events/{event}/subscribe', [SubscriptionController::class, 'subscribe'])->name('events.subscribe');
     Route::post('events/{event}/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('events.unsubscribe');
 });

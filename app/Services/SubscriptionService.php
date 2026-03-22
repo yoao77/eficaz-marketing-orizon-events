@@ -13,6 +13,26 @@ class SubscriptionService
         private EventRepository $eventRepository
     ) {}
 
+    public function getSubscribers(int $eventId, int $userId)
+    {
+        $event = $this->eventRepository->findById($eventId);
+
+        if (!$event) {
+            throw new Exception("Event not found.");
+        }
+
+        if ($event->user_id !== $userId) {
+            throw new Exception("You are not authorized to view this subscriber list.");
+        }
+
+        return [
+            'subscribers' => $event->participants()
+                ->select('users.id', 'users.name')
+                ->get(),
+            'people_capacity' => $event->people_capacity ?? '∞'
+        ];
+    }
+
     public function subscribe(int $eventId, int $userId)
     {
         $event = $this->eventRepository->findByIdWithCount($eventId);

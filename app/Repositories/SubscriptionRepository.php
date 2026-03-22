@@ -9,6 +9,14 @@ class SubscriptionRepository implements SubscriptionRepositoryContract
 {
     public function __construct(private EventUser $eventUser) {}
 
+    public function getSubscribers(int $eventId)
+    {
+        return $this->eventUser->findOrFail($eventId)
+            ->participants()
+            ->select('users.id', 'users.name')
+            ->get();
+    }
+
     public function subscribe(int $eventId, int $userId)
     {
         return $this->eventUser->withTrashed()->updateOrCreate(

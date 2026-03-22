@@ -15,4 +15,6 @@ interface EventRepositoryContract
     public function destroy(int $id, int $authUserId);
 
     public function findByIdWithCount(int $id);
+
+    public function findById(int $id);
 }

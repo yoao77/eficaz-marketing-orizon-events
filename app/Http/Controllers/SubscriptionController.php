@@ -10,6 +10,10 @@ class SubscriptionController extends Controller
         private SubscriptionService $service
     ) {}
 
+    public function getSubscribers(int $id) {
+        return $this->service->getSubscribers($id, auth()->id());
+    }
+
     public function subscribe(int $id)
     {
         try {
