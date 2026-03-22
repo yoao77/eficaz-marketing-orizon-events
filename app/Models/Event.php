@@ -63,4 +63,11 @@ class Event extends Model
 
         return $this->participants->contains('id', $userId);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->whereIn('status', ['active', 'in_progress'])
+            ->where('event_datetime', '>=', now())
+            ->whereNull('deleted_at');
+    }
 }

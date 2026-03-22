@@ -25,7 +25,7 @@ class EventRepository implements EventRepositoryContract
         }
 
         if (empty($filters['filter']) || $filters['filter'] === 'all') {
-            $query->where('event_datetime', '>=', now());
+            $query->active();
         }
 
         return $query->orderBy('event_datetime', 'asc')->get();
@@ -45,7 +45,7 @@ class EventRepository implements EventRepositoryContract
             'location' => $data['location'],
             'event_datetime' => $data['event_datetime'],
             'people_capacity' => $data['people_capacity'] ?? null,
-            'status' => $data['status'] ?? 'active',
+            'status' => $data['status'] ?? 'draft',
         ]);
 
         return $event;
@@ -54,7 +54,7 @@ class EventRepository implements EventRepositoryContract
     public function update(array $data, int $id, int $authUserId)
     {
         $event = $this->event->where('user_id', $authUserId)->findOrFail($id);
-
+        
         $event->update($data);
 
         return $event;
