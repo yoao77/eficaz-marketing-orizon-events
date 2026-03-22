@@ -54,4 +54,11 @@ class Event extends Model
         return !is_null($this->people_capacity) &&
             $this->participants_count >= $this->people_capacity;
     }
+
+    public function isUserSubscribed(?int $userId): bool
+    {
+        if (!$userId) return false;
+
+        return $this->participants->contains('id', $userId);
+    }
 }
