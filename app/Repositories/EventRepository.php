@@ -18,10 +18,11 @@ class EventRepository implements EventRepositoryContract
         }
 
         if (isset($filters['filter']) && $filters['filter'] === 'subscribed') {
-            $query->whereHas('participants', function ($q) use ($authUserId) {
-                $q->where('user_id', $authUserId)
-                    ->whereNull('event_user.canceled_by');
-            });
+            $query->whereIn('status', ['active', 'in_progress', 'canceled'])
+                ->whereHas('participants', function ($q) use ($authUserId) {
+                    $q->where('user_id', $authUserId)
+                        ->whereNull('event_user.canceled_by');
+                });
         }
 
         if (empty($filters['filter']) || $filters['filter'] === 'all') {

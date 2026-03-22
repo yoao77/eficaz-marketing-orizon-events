@@ -28,7 +28,7 @@ class UpdateEventRequest extends FormRequest
             'location' => 'required|string|max:255',
             'event_datetime' => 'required|date|after_or_equal:now',
             'people_capacity' => 'nullable|integer|min:1',
-            'status' => 'required|in:active,canceled',
+            'status' => 'required|in:active,canceled,draft',
         ];
     }
 
