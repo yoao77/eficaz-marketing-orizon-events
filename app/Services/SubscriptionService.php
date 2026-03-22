@@ -31,4 +31,15 @@ class SubscriptionService
 
         return $this->repository->subscribe($eventId, $userId);
     }
+
+    public function unsubscribe(int $eventId, int $userId)
+    {
+        $event = $this->eventRepository->findByIdWithCount($eventId);
+
+        if (!$event->isUserSubscribed($userId)) {
+            throw new \Exception("You are not registered for this event!");
+        }
+
+        return $this->repository->unsubscribe($eventId, $userId);
+    }
 }

@@ -25,7 +25,8 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'events.destroy',
     ]);
 
-    Route::post('events/subscribe/{id}', [SubscriptionController::class, 'subscribe'])->name('events.subscribe');
+    Route::post('events/{event}/subscribe', [SubscriptionController::class, 'subscribe'])->name('events.subscribe');
+    Route::post('events/{event}/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('events.unsubscribe');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

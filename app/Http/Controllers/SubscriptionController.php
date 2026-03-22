@@ -20,4 +20,15 @@ class SubscriptionController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function unsubscribe(int $id)
+    {
+        try {
+            $this->service->unsubscribe($id, auth()->id());
+
+            return redirect()->back()->with('success', 'Your subscription has been successfully cancelled!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }

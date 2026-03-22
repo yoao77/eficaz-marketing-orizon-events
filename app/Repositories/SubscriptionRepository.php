@@ -17,5 +17,17 @@ class SubscriptionRepository implements SubscriptionRepositoryContract
         );
     }
 
-    public function unsubscribe(int $eventId, int $userId) {}
+    public function unsubscribe(int $eventId, int $userId)
+    {
+        $subscription = $this->eventUser
+            ->where('event_id', $eventId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($subscription) {
+            return $subscription->delete();
+        }
+
+        return false;
+    }
 }
