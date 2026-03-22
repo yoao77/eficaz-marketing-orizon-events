@@ -65,4 +65,9 @@ class EventRepository implements EventRepositoryContract
 
         return $event->delete();
     }
+
+    public function findByIdWithCount(int $id)
+    {
+        return $this->event->withCount('participants')->findOrFail($id);
+    }
 }
