@@ -98,7 +98,7 @@
             type="button"
             x-on:click.prevent="$dispatch('open-subscribe-modal', { 
             title: '{{ $event->title }}', 
-            action: '/events/{{ $event->id }}subscribe' 
+            action: '{{ route('events.subscribe', $event->id) }}' 
         })"
             class="p-2 text-green-600 hover:bg-green-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

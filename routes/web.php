@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +24,8 @@ Route::middleware('auth')->group(function () {
         'update' => 'events.update',
         'destroy' => 'events.destroy',
     ]);
+
+    Route::post('events/subscribe/{id}', [SubscriptionController::class, 'subscribe'])->name('events.subscribe');
 });
 
 require __DIR__.'/auth.php';
