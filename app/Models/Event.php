@@ -48,4 +48,10 @@ class Event extends Model
     {
         return $this->status === 'active' && $this->event_datetime > now();
     }
+
+    public function isFull(): bool
+    {
+        return !is_null($this->people_capacity) &&
+            $this->participants_count >= $this->people_capacity;
+    }
 }
