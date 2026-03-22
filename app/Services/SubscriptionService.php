@@ -36,8 +36,12 @@ class SubscriptionService
     {
         $event = $this->eventRepository->findByIdWithCount($eventId);
 
+        if (in_array($event->status, ['canceled', 'in_progress'])) {
+            throw new Exception("You cannot unsubscribe from an event that is already {$event->status}!");
+        }
+
         if (!$event->isUserSubscribed($userId)) {
-            throw new \Exception("You are not registered for this event!");
+            throw new Exception("You are not registered for this event!");
         }
 
         return $this->repository->unsubscribe($eventId, $userId);
