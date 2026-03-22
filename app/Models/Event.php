@@ -36,7 +36,9 @@ class Event extends Model
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'event_user', 'event_id', 'user_id')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->wherePivotNull('canceled_by')
+            ->wherePivotNull('deleted_at');
     }
 
     public function eventUsers(): HasMany

@@ -13,7 +13,10 @@ class SubscriptionRepository implements SubscriptionRepositoryContract
     {
         return $this->eventUser->withTrashed()->updateOrCreate(
             ['event_id' => $eventId, 'user_id' => $userId],
-            ['deleted_at' => null]
+            [
+                'deleted_at' => null,
+                'canceled_by' => null
+            ]
         );
     }
 
@@ -25,7 +28,10 @@ class SubscriptionRepository implements SubscriptionRepositoryContract
             ->first();
 
         if ($subscription) {
-            return $subscription->delete();
+
+            return $subscription->update([
+                'canceled_by' => 'user',
+            ]);
         }
 
         return false;

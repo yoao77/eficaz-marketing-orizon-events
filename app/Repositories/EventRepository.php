@@ -19,7 +19,9 @@ class EventRepository implements EventRepositoryContract
 
         if (isset($filters['filter']) && $filters['filter'] === 'subscribed') {
             $query->whereHas('participants', function ($q) use ($authUserId) {
-                $q->where('user_id', $authUserId);
+                $q->where('user_id', $authUserId)
+                    ->whereNull('event_user.canceled_by')
+                    ->whereNull('event_user.deleted_at');
             });
         }
 

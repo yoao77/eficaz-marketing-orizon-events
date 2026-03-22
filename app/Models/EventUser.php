@@ -14,6 +14,7 @@ class EventUser extends Model
     protected $fillable = [
         'event_id',
         'user_id',
+        'canceled_by'
     ];
 
     // protected $dates = [
