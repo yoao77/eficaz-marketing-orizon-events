@@ -84,8 +84,11 @@
                 @endforelse
             </div>
         </div>
+        <div class="mt-6"> 
+            {{ $events->appends(request()->query())->links() }}
+        </div>
     </div>
-
+    
     <x-events.create-modal />
     <x-events.edit-modal />
     <x-events.show-modal />

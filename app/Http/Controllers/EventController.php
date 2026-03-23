@@ -20,22 +20,30 @@ class EventController extends Controller
             $filters = $request->only(['filter']);
             $authUserId = auth()->id();
 
-            $events = $this->service->index($filters, $authUserId);
+            $perPage = $request->input('per_page', 3);
+
+            $events = $this->service->index($filters, $authUserId, (int) $perPage);
 
             return view('events.index', compact('events'));
         } catch (\Exception $e) {
             Log::error("Error listing events:" . $e->getMessage());
 
             return view('events.index', [
-                'events' => collect([]),
+                'events' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 5),
                 'error' => 'Oops! We had a problem loading the events.'
             ]);
         }
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $events = $this->service->getAll();
+        $filters = $request->only(['filter']);
+
+        $perPage = (int) $request->input('per_page', 3);
+
+        $authUserId = auth()->id();
+
+        $events = $this->service->index($filters, $authUserId, $perPage);
 
         return EventResource::collection($events);
     }

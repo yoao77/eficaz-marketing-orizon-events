@@ -8,14 +8,14 @@ class EventService
 {
     public function __construct(private EventRepositoryContract $repository) {}
 
-    public function index(array $filters, ?int $authUserId)
+    public function index(array $filters, ?int $authUserId, int $perPage = 5)
     {
-        return $this->repository->index($filters, $authUserId);
+        return $this->repository->index($filters, $authUserId, $perPage);
     }
 
-    public function getAll()
+    public function getAll(int $perPage)
     {
-        $events = $this->repository->index([], null);
+        $events = $this->repository->index([], null, $perPage);
 
         return $events->loadCount('participants');
     }
