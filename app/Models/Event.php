@@ -21,7 +21,7 @@ class Event extends Model
         'event_datetime',
         'end_date',
         'people_capacity',
-        'status'
+        'status',
     ];
 
     protected $casts = [

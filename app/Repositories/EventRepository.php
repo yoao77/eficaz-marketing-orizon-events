@@ -12,7 +12,7 @@ class EventRepository implements EventRepositoryContract
     public function index(array $filters, ?int $authUserId, int $perPage)
     {
         $query = $this->event->query();
-        
+
         $query->withCount('participants');
 
         if (isset($filters['filter']) && $filters['filter'] === 'mine') {
@@ -31,7 +31,7 @@ class EventRepository implements EventRepositoryContract
             $query->active();
         }
 
-        return $query->orderBy('event_datetime', 'asc')->paginate($perPage); 
+        return $query->orderBy('event_datetime', 'asc')->paginate($perPage);
     }
 
     public function store(array $data, int $authUserId)

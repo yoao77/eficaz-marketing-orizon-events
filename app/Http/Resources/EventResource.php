@@ -21,7 +21,7 @@ class EventResource extends JsonResource
             'location' => $this->location,
             'ends_at' => $this->end_date ? $this->end_date->format('Y-m-d H:i') : null,
             'capacity' => (int) $this->people_capacity,
-            'subscribers_count' => (int) ($this->participants_count ?? 0), 
+            'subscribers_count' => (int) ($this->participants_count ?? 0),
         ];
     }
 }

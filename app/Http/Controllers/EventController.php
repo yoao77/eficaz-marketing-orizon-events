@@ -8,6 +8,7 @@ use App\Http\Resources\EventResource;
 use App\Services\EventService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
@@ -26,11 +27,11 @@ class EventController extends Controller
 
             return view('events.index', compact('events'));
         } catch (\Exception $e) {
-            Log::error("Error listing events:" . $e->getMessage());
+            Log::error('Error listing events:'.$e->getMessage());
 
             return view('events.index', [
-                'events' => new \Illuminate\Pagination\LengthAwarePaginator([], 0, 5),
-                'error' => 'Oops! We had a problem loading the events.'
+                'events' => new LengthAwarePaginator([], 0, 5),
+                'error' => 'Oops! We had a problem loading the events.',
             ]);
         }
     }
@@ -109,7 +110,7 @@ class EventController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'An unexpected error occurred: '.$e->getMessage()]);
         }
     }
 }
