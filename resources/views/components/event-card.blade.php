@@ -1,29 +1,29 @@
 @props(['event', 'view' => 'all'])
 
 <div x-data="{}" class="bg-white shadow-sm rounded-lg p-6 border border-gray-100 flex flex-col justify-between h-full event-card-container">
-   <div class="flex justify-between items-start mb-4">
-    <div class="flex flex-col gap-1">
-        <h3 class="text-lg font-bold text-gray-900 leading-tight">{{ $event->title }}</h3>
-        
-        @if(auth()->check() && in_array(request('filter', 'all'), ['all', 'subscribed']))
+    <div class="flex justify-between items-start mb-4">
+        <div class="flex flex-col gap-1">
+            <h3 class="text-lg font-bold text-gray-900 leading-tight">{{ $event->title }}</h3>
+
+            @if(auth()->check() && in_array(request('filter', 'all'), ['all', 'subscribed']))
             <div>
                 @if($event->isUserSubscribed(auth()->id()))
-                    <span class="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded bg-indigo-100 text-indigo-700 border border-indigo-200">
-                        Subscribed
-                    </span>
+                <span class="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded bg-indigo-100 text-indigo-700 border border-indigo-200">
+                    Subscribed
+                </span>
                 @else
-                    <span class="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded bg-gray-50 text-gray-400 border border-gray-100">
-                        Not Subscribed
-                    </span>
+                <span class="px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded bg-gray-50 text-gray-400 border border-gray-100">
+                    Not Subscribed
+                </span>
                 @endif
             </div>
-        @endif
-    </div>
+            @endif
+        </div>
 
-    <span class="shrink-0 px-2 py-1 text-[10px] font-bold uppercase rounded-full {{ $event->status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-        {{ $event->status }}
-    </span>
-</div> 
+        <span class="shrink-0 px-2 py-1 text-[10px] font-bold uppercase rounded-full {{ $event->status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+            {{ $event->status }}
+        </span>
+    </div>
 
     <div class="mt-6 flex justify-end space-x-2 border-t pt-4">
 
@@ -35,11 +35,11 @@
                     .then(data => $dispatch('open-subscribers-modal', data))
             "
             class="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition">
-    
+
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-        </button> 
+        </button>
 
         <button title="Show"
             x-on:click="$dispatch('open-show-modal', @js($event))"
@@ -49,7 +49,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
         </button>
-      
+
         <button title="Edit"
             type="button"
             x-on:click.prevent="$dispatch('open-edit-modal', @js($event))"
@@ -69,7 +69,23 @@
 
         @elseif(request('filter') === 'subscribed')
         <button title="Show"
-            x-on:click="$dispatch('open-show-modal', @js($event))"
+            x-on:click="
+        fetch('{{ route('events.show', $event->id) }}', {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao carregar evento');
+            return res.json();
+        })
+        .then(json => {
+            // O Laravel Resource sempre coloca os dados dentro da chave 'data'
+            $dispatch('open-show-modal', json.data);
+        })
+        .catch(err => console.error('Erro na requisição:', err))
+    "
             class="p-2 text-gray-600 hover:bg-gray-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -90,11 +106,25 @@
         </button>
 
         @else
+
         <button title="Show"
-            x-on:click="$dispatch('open-show-modal', { 
-                ...{{ json_encode($event) }}, 
-                participants_count: {{ $event->totalParticipants() }} 
-            })"
+            x-on:click="
+        fetch('{{ route('events.show', $event->id) }}', {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao carregar evento');
+            return res.json();
+        })
+        .then(json => {
+            // O Laravel Resource sempre coloca os dados dentro da chave 'data'
+            $dispatch('open-show-modal', json.data);
+        })
+        .catch(err => console.error('Erro na requisição:', err))
+    "
             class="p-2 text-gray-600 hover:bg-gray-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -102,7 +132,7 @@
             </svg>
         </button>
 
-    @if(!$event->isUserSubscribed(auth()->id()))
+        @if(!$event->isUserSubscribed(auth()->id()))
         <button title="Subscribe"
             type="button"
             x-on:click.prevent="$dispatch('open-subscribe-modal', { 
@@ -114,7 +144,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
         </button>
-    @endif
+        @endif
         @endif
     </div>
 </div>

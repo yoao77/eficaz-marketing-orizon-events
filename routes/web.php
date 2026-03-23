@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('events', EventController::class)->names([
         'index' => 'events.index',
+        'show' => 'events.show',
         'store' => 'events.store',
         'update' => 'events.update',
         'destroy' => 'events.destroy',
