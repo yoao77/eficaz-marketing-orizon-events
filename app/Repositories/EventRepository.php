@@ -18,13 +18,15 @@ class EventRepository implements EventRepositoryContract
         }
 
         if (isset($filters['filter']) && $filters['filter'] === 'subscribed') {
-            $query->whereHas('participants', function ($q) use ($authUserId) {
-                $q->where('user_id', $authUserId);
-            });
+            $query->whereIn('status', ['active', 'in_progress', 'canceled'])
+                ->whereHas('participants', function ($q) use ($authUserId) {
+                    $q->where('user_id', $authUserId)
+                        ->whereNull('event_user.canceled_by');
+                });
         }
 
         if (empty($filters['filter']) || $filters['filter'] === 'all') {
-            $query->where('event_datetime', '>=', now());
+            $query->active();
         }
 
         return $query->orderBy('event_datetime', 'asc')->get();
@@ -44,7 +46,7 @@ class EventRepository implements EventRepositoryContract
             'location' => $data['location'],
             'event_datetime' => $data['event_datetime'],
             'people_capacity' => $data['people_capacity'] ?? null,
-            'status' => $data['status'] ?? 'active',
+            'status' => $data['status'] ?? 'draft',
         ]);
 
         return $event;
@@ -64,5 +66,15 @@ class EventRepository implements EventRepositoryContract
         $event = $this->event->where('user_id', $authUserId)->findOrFail($id);
 
         return $event->delete();
+    }
+
+    public function findById(int $id)
+    {
+        return $this->event->find($id);
+    }
+
+    public function findByIdWithCount(int $id)
+    {
+        return $this->event->withCount('participants')->findOrFail($id);
     }
 }

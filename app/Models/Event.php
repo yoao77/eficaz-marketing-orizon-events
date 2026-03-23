@@ -36,11 +36,40 @@ class Event extends Model
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'event_user', 'event_id', 'user_id')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->wherePivotNull('canceled_by')
+            ->wherePivotNull('deleted_at');
     }
 
     public function eventUsers(): HasMany
     {
         return $this->hasMany(EventUser::class, 'event_id');
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active' && $this->event_datetime > now();
+    }
+
+    public function isFull(): bool
+    {
+        return ! is_null($this->people_capacity) &&
+            $this->participants_count >= $this->people_capacity;
+    }
+
+    public function isUserSubscribed(?int $userId): bool
+    {
+        if (! $userId) {
+            return false;
+        }
+
+        return $this->participants->contains('id', $userId);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->whereIn('status', ['active', 'in_progress'])
+            ->where('event_datetime', '>=', now())
+            ->whereNull('deleted_at');
     }
 }

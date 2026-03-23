@@ -58,6 +58,7 @@
                         <select x-model="event.status" name="status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                             <option value="active">Active</option>
                             <option value="canceled">Canceled</option>
+                            <option value="draft">Draft</option>
                         </select>
                     </div>
                 </div>

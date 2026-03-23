@@ -32,7 +32,7 @@
                     Cancel
                 </x-secondary-button>
 
-                <x-primary-button class="bg-green-600 hover:bg-green-700">
+                <x-primary-button type="submit" class="bg-green-600 hover:bg-green-700">
                     Yes, I want to go!
                 </x-primary-button>
             </div>

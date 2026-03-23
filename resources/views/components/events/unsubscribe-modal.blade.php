@@ -7,8 +7,9 @@
         action = $event.detail.action; 
         $dispatch('open-modal', 'open-unsubscribe-modal')
     " class="p-6">
-        
-        <div>
+
+        <form method="POST" :action="action">
+            @csrf
             <div class="flex items-center mb-4">
                 <div class="p-2 bg-red-100 rounded-full mr-3">
                     <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +22,7 @@
             </div>
 
             <p class="text-sm text-gray-600">
-                Are you sure you want to leave the event: 
+                Are you sure you want to leave the event:
                 <span class="font-bold text-gray-900" x-text="title"></span>?
             </p>
 
@@ -31,10 +32,10 @@
                 </x-secondary-button>
 
                 {{-- Botão de Confirmar (Simulando Front-End) --}}
-                <x-danger-button type="button" x-on:click="$dispatch('close'); alert('Inscrição cancelada (simulado)')">
+                <x-danger-button type="submit">
                     Yes, Unsubscribe
                 </x-danger-button>
             </div>
-        </div>
+        </form>
     </div>
 </x-modal>
