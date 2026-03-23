@@ -27,8 +27,15 @@ class SubscriptionService
 
         return [
             'subscribers' => $event->participants()
-                ->select('users.id', 'users.name')
-                ->get(),
+                ->withPivot('created_at')
+                ->get()
+                ->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'created_at' => $user->pivot->created_at->format('d/m/Y H:i'),
+                    ];
+                }),
             'people_capacity' => $event->people_capacity ?? '∞',
         ];
     }
