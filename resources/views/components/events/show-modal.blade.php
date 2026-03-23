@@ -47,7 +47,7 @@
                             <p class="text-sm font-semibold text-gray-700" x-text="event.end_date || 'N/A'"></p>
                         </div>
                     </div>
-
+                    
                     <div class="flex items-center p-4 border border-gray-100 rounded-lg shadow-sm">
                         <div class="bg-purple-50 p-3 rounded-lg mr-4 text-2xl">👥</div>
                         <div>
@@ -61,6 +61,7 @@
                     </div> 
                 </div>
             </div>
+
 
             <div class="mt-12 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')" class="px-8">
