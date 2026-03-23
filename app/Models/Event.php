@@ -65,7 +65,9 @@ class Event extends Model
             return false;
         }
 
-        return $this->participants->contains('id', $userId);
+        return $this->participants()
+            ->where('users.id', $userId)
+            ->exists();
     }
 
     public function scopeActive($query)
