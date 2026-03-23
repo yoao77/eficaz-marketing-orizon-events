@@ -42,6 +42,7 @@ class EventRepository implements EventRepositoryContract
             'description' => $data['description'],
             'location' => $data['location'],
             'event_datetime' => $data['event_datetime'],
+            'end_date' => $data['end_date'],
             'people_capacity' => $data['people_capacity'] ?? null,
             'status' => $data['status'] ?? 'active',
         ]);

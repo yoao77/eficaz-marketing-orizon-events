@@ -27,6 +27,7 @@ class StoreEventRequest extends FormRequest
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'event_datetime' => 'required|date|after:now',
+            'end_date' => 'required|date|after:event_datetime',
             'people_capacity' => 'nullable|integer|min:1',
             'status' => 'nullable|in:active,canceled',
         ];
