@@ -21,14 +21,14 @@
                 {{ __('All Events') }}
                 @endif
             </h2>
-        
-        @if(request('filter') === 'mine')
+
+            @if(request('filter') === 'mine')
             <div class="flex space-x-3">
                 <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'create-event-modal')">
                     {{ __('Create Event') }}
                 </x-primary-button>
             </div>
-        @endif
+            @endif
 
         </div>
 
@@ -51,7 +51,7 @@
                 {{ __('Subscribed') }}
             </x-tab-item>
         </nav>
-        
+
     </x-slot>
 
     <div class="mb-4 p-4 bg-blue-50 dark:bg-gray-800 rounded-lg flex justify-between items-center shadow-sm border border-blue-100 dark:border-gray-700">
@@ -60,6 +60,17 @@
         </span>
         <span id="js-clock" class="text-xs text-blue-600 dark:text-gray-400 font-mono"></span>
     </div>
+
+    @if(isset($error) || $errors->has('error'))
+    <div class="mb-6 flex items-center p-4 text-red-800 border-l-4 border-red-500 bg-red-50 rounded-r-lg shadow-sm" role="alert">
+        <svg class="flex-shrink-0 w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>
+        <div class="text-sm font-bold">
+            {{ $error ?? $errors->first('error') }}
+        </div>
+    </div>
+    @endif
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -88,21 +99,21 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        
+
         const eventCards = document.querySelectorAll('.event-card-container');
         const countDisplay = document.getElementById('js-event-count');
-        
-        if(countDisplay) {
+
+        if (countDisplay) {
             countDisplay.innerText = eventCards.length;
         }
 
         const clockDisplay = document.getElementById('js-clock');
-        
+
         setInterval(() => {
             const now = new Date();
             clockDisplay.innerText = '🕒 ' + now.toLocaleTimeString();
         }, 1000);
-        
+
         console.log('Pure JavaScript: Count and Clock started!');
     });
 </script>

@@ -8,6 +8,7 @@ use App\Http\Resources\EventResource;
 use App\Services\EventService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
@@ -15,13 +16,21 @@ class EventController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->only(['filter']);
+        try {
+            $filters = $request->only(['filter']);
+            $authUserId = auth()->id();
 
-        $authUserId = auth()->id();
+            $events = $this->service->index($filters, $authUserId);
 
-        $events = $this->service->index($filters, $authUserId);
+            return view('events.index', compact('events'));
+        } catch (\Exception $e) {
+            Log::error("Error listing events:" . $e->getMessage());
 
-        return view('events.index', compact('events'));
+            return view('events.index', [
+                'events' => collect([]),
+                'error' => 'Oops! We had a problem loading the events.'
+            ]);
+        }
     }
 
     public function getAll()
@@ -92,7 +101,7 @@ class EventController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->withErrors(['error' => 'An unexpected error occurred: '.$e->getMessage()]);
+                ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
         }
     }
 }
