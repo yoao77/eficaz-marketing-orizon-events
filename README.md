@@ -1,5 +1,31 @@
-## Guia de Instalação e Execução
+# Orizon Events
 
+O **Orizon Events** é uma plataforma completa para a gestão do ciclo de vida de eventos. O sistema foi projetado para oferecer uma experiência fluida tanto para organizadores — que possuem controle total sobre suas criações — quanto para participantes, garantindo a integridade dos dados através de regras de negócio rigorosas e análise estática de código.
+
+---
+
+## Requisitos do Sistema
+
+O projeto foi construído sobre três pilares principais:
+
+### 1. Gestão de Eventos (CRUD & Business Logic)
+* **Controle Total:** Criação, edição, visualização e exclusão de eventos com campos detalhados (Título, Descrição, Data/Hora, Local e Capacidade).
+* **Status Dinâmico:** Gerenciamento de estados (Ativo/Cancelado) para controle de disponibilidade.
+* **Painel do Organizador:** Acesso exclusivo à lista detalhada de inscritos apenas para os criadores de cada evento.
+
+### 2. Experiência do Participante
+* **Inscrições Inteligentes:** Fluxo simplificado de adesão a eventos com validações em tempo real.
+* **Autogestão:** Área de "Minhas Inscrições" para acompanhamento e possibilidade de cancelamento da própria participação.
+
+### 3. Regras de Negócio e Segurança
+* **Validação de Lotação:** Impedimento automático de novas inscrições em eventos que atingiram a capacidade máxima.
+* **Prevenção de Duplicidade:** Garantia de que um usuário não se inscreva mais de uma vez no mesmo evento.
+* **Consistência Temporal:** Bloqueio de interações (inscrição/cancelamento) em eventos com datas retroativas.
+* **Proteção de Acesso:** Camadas de autorização que garantem que apenas usuários permitidos visualizem dados sensíveis ou realizem alterações.
+
+<br>
+
+## Guia de Instalação e Execução
 Siga os passos abaixo para configurar o ambiente de desenvolvimento local utilizando Docker.
 
 ### 1. Clonar o Repositório
