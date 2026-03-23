@@ -6,8 +6,6 @@ interface EventRepositoryContract
 {
     public function index(array $filters, ?int $authUserId);
 
-    public function show(int $id);
-
     public function store(array $data, int $authUserId);
 
     public function update(array $data, int $id, int $authUserId);

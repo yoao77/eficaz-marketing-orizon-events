@@ -32,11 +32,6 @@ class EventRepository implements EventRepositoryContract
         return $query->orderBy('event_datetime', 'asc')->get();
     }
 
-    public function show(int $id)
-    {
-        return $this->event->findOrFail($id);
-    }
-
     public function store(array $data, int $authUserId)
     {
         $event = $this->event->create([
