@@ -76,4 +76,9 @@ class Event extends Model
             ->where('event_datetime', '>=', now())
             ->whereNull('deleted_at');
     }
+
+    public function totalParticipants(): int
+    {
+        return $this->participants_count ?? $this->participants()->count();
+    }
 }

@@ -91,7 +91,10 @@
 
         @else
         <button title="Show"
-            x-on:click="$dispatch('open-show-modal', @js($event))"
+            x-on:click="$dispatch('open-show-modal', { 
+                ...{{ json_encode($event) }}, 
+                participants_count: {{ $event->totalParticipants() }} 
+            })"
             class="p-2 text-gray-600 hover:bg-gray-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -104,7 +107,7 @@
             type="button"
             x-on:click.prevent="$dispatch('open-subscribe-modal', { 
             title: '{{ $event->title }}', 
-            action: '{{ route('events.subscribe', $event->id) }}' 
+            action: '{{ route('events.subscribe', $event->id) }}'
         })"
             class="p-2 text-green-600 hover:bg-green-50 rounded-md transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

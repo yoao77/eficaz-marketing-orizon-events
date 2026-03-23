@@ -52,9 +52,13 @@
                         <div class="bg-purple-50 p-3 rounded-lg mr-4 text-2xl">👥</div>
                         <div>
                             <p class="text-[10px] uppercase font-bold text-gray-400">Capacity</p>
-                            <p class="text-sm font-semibold text-gray-700"><span x-text="event.people_capacity || '∞'"></span> people max.</p>
+                            <p class="text-sm font-semibold text-gray-700">
+                                <span x-text="event.participants_count || 0"></span> 
+                                / 
+                                <span x-text="event.people_capacity || '∞'"></span> people
+                            </p>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
 
