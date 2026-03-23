@@ -22,13 +22,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <x-input-label for="create_event_datetime" value="Start Date & Time" />
-                    <x-text-input id="create_event_datetime" name="event_datetime" type="datetime-local" class="mt-1 block w-full" :value="old('event_datetime')" required />
+                    <x-text-input id="create_event_datetime" name="event_datetime" type="datetime-local" class="mt-1 block w-full" :value="old('event_datetime')" min="{{ now()->format('Y-m-d\TH:i') }}" required />
                     <x-input-error :messages="$errors->get('event_datetime')" class="mt-2" />
                 </div>
 
                 <div>
                     <x-input-label for="create_end_date" value="End Date & Time" />
-                    <x-text-input id="create_end_date" name="end_date" type="datetime-local" class="mt-1 block w-full" :value="old('end_date')" required />
+                    <x-text-input id="create_end_date" name="end_date" type="datetime-local" class="mt-1 block w-full" :value="old('end_date')" min="{{ now()->format('Y-m-d\TH:i') }}" required />
                     <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <x-input-error :messages="$errors->get('people_capacity')" class="mt-2" />
                 </div>
             </div>
-        </div> 
+        </div>
 
         <div class="mt-6 flex justify-end">
             <x-secondary-button x-on:click="$dispatch('close')">
