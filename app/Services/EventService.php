@@ -13,6 +13,13 @@ class EventService
         return $this->repository->index($filters, $authUserId);
     }
 
+    public function getAll()
+    {
+        $events = $this->repository->index([], null);
+
+        return $events->loadCount('participants');
+    }
+
     public function store(array $data, int $authUserId)
     {
         return $this->repository->store($data, $authUserId);

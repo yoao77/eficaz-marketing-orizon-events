@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Http\Resources\EventResource;
 use App\Services\EventService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -21,6 +22,13 @@ class EventController extends Controller
         $events = $this->service->index($filters, $authUserId);
 
         return view('events.index', compact('events'));
+    }
+
+    public function getAll()
+    {
+        $events = $this->service->getAll();
+
+        return EventResource::collection($events);
     }
 
     public function store(StoreEventRequest $request)
