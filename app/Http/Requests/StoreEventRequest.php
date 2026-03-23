@@ -40,6 +40,8 @@ class StoreEventRequest extends FormRequest
             'location.required' => 'The event location is required.',
             'event_datetime.required' => 'The event date and time are required.',
             'event_datetime.after' => 'The event date and time must be in the future.',
+            'end_date.required' => 'The end date and time are required.',
+            'end_date.after' => 'The end date must be after the start date.',
             'people_capacity.integer' => 'The people capacity must be an integer.',
             'people_capacity.min' => 'The minimum capacity is 1 person.',
             'status.in' => 'The event status must be either "active" or "canceled".',

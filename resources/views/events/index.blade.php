@@ -32,7 +32,6 @@
 
         </div>
 
-        {{-- Linha de Baixo: Navegação por Tabs --}}
         <nav class="flex space-x-8 border-b border-gray-100">
             <x-tab-item
                 :href="route('events.index')"
