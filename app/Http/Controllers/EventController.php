@@ -36,19 +36,6 @@ class EventController extends Controller
         }
     }
 
-    public function getAll(Request $request)
-    {
-        $filters = $request->only(['filter']);
-
-        $perPage = (int) $request->input('per_page', 3);
-
-        $authUserId = auth()->id();
-
-        $events = $this->service->index($filters, $authUserId, $perPage);
-
-        return EventResource::collection($events);
-    }
-
     public function store(StoreEventRequest $request)
     {
         $data = $request->validated();
@@ -66,6 +53,13 @@ class EventController extends Controller
         return back()
             ->withInput()
             ->withErrors(['error' => 'Could not create event']);
+    }
+
+    public function show(int $id)
+    {
+        $event = $this->service->show($id);
+
+        return new EventResource($event);
     }
 
     public function update(UpdateEventRequest $request, int $id)
