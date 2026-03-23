@@ -17,9 +17,11 @@ class EventResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'capacity' => $this->people_capacity,
-            'subscribers_count' => $this->participants_count ?? 0,
-            'is_full' => $this->isFull(),
+            'starts_at' => $this->event_datetime ? $this->event_datetime->format('Y-m-d H:i') : null,
+            'location' => $this->location,
+            'ends_at' => $this->end_date ? $this->end_date->format('Y-m-d H:i') : null,
+            'capacity' => (int) $this->people_capacity,
+            'subscribers_count' => (int) ($this->participants_count ?? 0),
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Resources\EventResource;
 use App\Services\EventService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
@@ -20,22 +21,30 @@ class EventController extends Controller
             $filters = $request->only(['filter']);
             $authUserId = auth()->id();
 
-            $events = $this->service->index($filters, $authUserId);
+            $perPage = $request->input('per_page', 3);
+
+            $events = $this->service->index($filters, $authUserId, (int) $perPage);
 
             return view('events.index', compact('events'));
         } catch (\Exception $e) {
-            Log::error("Error listing events:" . $e->getMessage());
+            Log::error('Error listing events:'.$e->getMessage());
 
             return view('events.index', [
-                'events' => collect([]),
-                'error' => 'Oops! We had a problem loading the events.'
+                'events' => new LengthAwarePaginator([], 0, 5),
+                'error' => 'Oops! We had a problem loading the events.',
             ]);
         }
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $events = $this->service->getAll();
+        $filters = $request->only(['filter']);
+
+        $perPage = (int) $request->input('per_page', 3);
+
+        $authUserId = auth()->id();
+
+        $events = $this->service->index($filters, $authUserId, $perPage);
 
         return EventResource::collection($events);
     }
@@ -101,7 +110,7 @@ class EventController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->withErrors(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'An unexpected error occurred: '.$e->getMessage()]);
         }
     }
 }
