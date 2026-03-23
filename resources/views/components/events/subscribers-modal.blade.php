@@ -13,26 +13,28 @@
                 <h2 class="text-lg font-bold text-gray-900">
                    Subscribers 
                 </h2>
-                {{-- Contador Dinâmico --}}
+
                 <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-full">
-                    <span x-text="subscribers.length"></span>/<span x-text="capacity"></span>
+                    <span x-text="subscribers.length"></span> / <span x-text="capacity"></span>
                 </span>
             </div>
 
-            {{-- Lista com Scroll usando Alpine --}}
             <ul class="max-h-60 overflow-y-auto divide-y divide-gray-100 pr-2 custom-scrollbar">
                 <template x-for="subscriber in subscribers" :key="subscriber.id">
-                    <li class="py-3 flex items-center">
-                        <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold mr-3">
-                            <span x-text="subscriber.name.substring(0, 2).toUpperCase()"></span>
+                    <li class="py-3 flex items-center justify-between">
+                        <div class="flex items-center">
+                            
+                            <div class="flex flex-col">
+                                <span class="text-sm text-gray-800 font-semibold" x-text="subscriber.name"></span>
+
+                                <span class="text-[10px] text-gray-400" x-text="'Inscribed on: ' + (subscriber.created_at || 'N/A')"></span>
+                            </div>
                         </div>
-                        <span class="text-sm text-gray-700 font-medium" x-text="subscriber.name"></span>
                     </li>
                 </template>
 
-                {{-- Estado Vazio (Equivalente ao @empty) --}}
                 <template x-if="subscribers.length === 0">
-                    <li class="py-8 text-center text-gray-500 text-sm">
+                    <li class="py-8 text-center text-gray-500 text-sm italic">
                         No users registered yet.
                     </li>
                 </template>

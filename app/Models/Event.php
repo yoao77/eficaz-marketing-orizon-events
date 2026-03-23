@@ -65,7 +65,9 @@ class Event extends Model
             return false;
         }
 
-        return $this->participants->contains('id', $userId);
+        return $this->participants()
+            ->where('users.id', $userId)
+            ->exists();
     }
 
     public function scopeActive($query)
@@ -73,5 +75,10 @@ class Event extends Model
         return $query->whereIn('status', ['active', 'in_progress'])
             ->where('event_datetime', '>=', now())
             ->whereNull('deleted_at');
+    }
+
+    public function totalParticipants(): int
+    {
+        return $this->participants_count ?? $this->participants()->count();
     }
 }
