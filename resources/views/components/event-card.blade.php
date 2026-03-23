@@ -99,6 +99,7 @@
             </svg>
         </button>
 
+    @if(!$event->isUserSubscribed(auth()->id()))
         <button title="Subscribe"
             type="button"
             x-on:click.prevent="$dispatch('open-subscribe-modal', { 
@@ -110,6 +111,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
         </button>
+    @endif
         @endif
     </div>
 </div>
