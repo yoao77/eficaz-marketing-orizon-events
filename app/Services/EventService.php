@@ -13,8 +13,9 @@ class EventService
         return $this->repository->index($filters, $authUserId);
     }
 
-    public function getAll() {
-        $events = $this->repository->index([], null); 
+    public function getAll()
+    {
+        $events = $this->repository->index([], null);
 
         return $events->loadCount('participants');
     }
