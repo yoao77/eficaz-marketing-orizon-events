@@ -13,6 +13,11 @@ class EventService
         return $this->repository->index($filters, $authUserId, $perPage);
     }
 
+    public function show(int $id)
+    {
+        return $this->repository->findByIdWithCount($id); 
+    }
+
     public function getAll(int $perPage)
     {
         $events = $this->repository->index([], null, $perPage);
