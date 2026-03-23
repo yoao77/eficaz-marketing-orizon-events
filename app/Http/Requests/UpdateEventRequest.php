@@ -27,6 +27,7 @@ class UpdateEventRequest extends FormRequest
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'event_datetime' => 'required|date|after_or_equal:now',
+            'end_date' => 'required|date|after:event_datetime',
             'people_capacity' => 'nullable|integer|min:1',
             'status' => 'required|in:active,canceled,draft',
         ];
@@ -40,6 +41,8 @@ class UpdateEventRequest extends FormRequest
             'location.required' => 'A location must be specified.',
             'event_datetime.required' => 'The date and time are required.',
             'event_datetime.after_or_equal' => 'The event cannot be scheduled for a past date.',
+            'end_date.required' => 'The end date is required.',
+            'end_date.after' => 'The end date must be after the start date.',
             'people_capacity.integer' => 'Capacity must be a valid number.',
             'people_capacity.min' => 'Capacity must be at least 1 person.',
             'status.required' => 'The event status is required.',
