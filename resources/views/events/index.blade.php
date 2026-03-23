@@ -9,10 +9,10 @@
     @endif
 
     <x-slot name="header">
-        {{-- Topo: Título e Botão de Criar --}}
+
         <div class="flex justify-between items-center mb-4">
             <h2 class="font-bold text-2xl text-gray-800 leading-tight">
-                {{-- Título dinâmico baseado no filtro --}}
+
                 @if(request('filter') === 'mine')
                 {{ __('My Events') }}
                 @elseif(request('filter') === 'subscribed')
@@ -51,6 +51,7 @@
                 {{ __('Subscribed') }}
             </x-tab-item>
         </nav>
+        
     </x-slot>
 
     <div class="mb-4 p-4 bg-blue-50 dark:bg-gray-800 rounded-lg flex justify-between items-center shadow-sm border border-blue-100 dark:border-gray-700">
