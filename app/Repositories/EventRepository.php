@@ -55,7 +55,7 @@ class EventRepository implements EventRepositoryContract
     public function update(array $data, int $id, int $authUserId)
     {
         $event = $this->event->where('user_id', $authUserId)->findOrFail($id);
-        
+
         $event->update($data);
 
         return $event;
@@ -68,7 +68,8 @@ class EventRepository implements EventRepositoryContract
         return $event->delete();
     }
 
-    public function findById(int $id) {
+    public function findById(int $id)
+    {
         return $this->event->find($id);
     }
 

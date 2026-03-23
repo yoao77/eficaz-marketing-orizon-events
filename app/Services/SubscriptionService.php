@@ -13,46 +13,46 @@ class SubscriptionService
         private EventRepository $eventRepository
     ) {}
 
-    public function getSubscribers(int $eventId, int $userId)
+    public function getSubscribers(int $eventId, int $authUserId)
     {
         $event = $this->eventRepository->findById($eventId);
 
-        if (!$event) {
-            throw new Exception("Event not found.");
+        if (! $event) {
+            throw new Exception('Event not found.');
         }
 
-        if ($event->user_id !== $userId) {
-            throw new Exception("You are not authorized to view this subscriber list.");
+        if ($event->user_id !== $authUserId) {
+            throw new Exception('You are not authorized to view this subscriber list.');
         }
 
         return [
             'subscribers' => $event->participants()
                 ->select('users.id', 'users.name')
                 ->get(),
-            'people_capacity' => $event->people_capacity ?? '∞'
+            'people_capacity' => $event->people_capacity ?? '∞',
         ];
     }
 
-    public function subscribe(int $eventId, int $userId)
+    public function subscribe(int $eventId, int $authUserId)
     {
         $event = $this->eventRepository->findByIdWithCount($eventId);
 
-        if (!$event->isActive()) {
-            throw new Exception("This event is no longer active or has already passed.");
+        if (! $event->isActive()) {
+            throw new Exception('This event is no longer active or has already passed.');
         }
 
-        if ($event->isUserSubscribed($userId)) {
-            throw new Exception("You are already registered for this event!");
+        if ($event->isUserSubscribed($authUserId)) {
+            throw new Exception('You are already registered for this event!');
         }
 
         if ($event->isFull()) {
-            throw new Exception("The event is full!");
+            throw new Exception('The event is full!');
         }
 
-        return $this->repository->subscribe($eventId, $userId);
+        return $this->repository->subscribe($eventId, $authUserId);
     }
 
-    public function unsubscribe(int $eventId, int $userId)
+    public function unsubscribe(int $eventId, int $authUserId)
     {
         $event = $this->eventRepository->findByIdWithCount($eventId);
 
@@ -60,10 +60,10 @@ class SubscriptionService
             throw new Exception("You cannot unsubscribe from an event that is already {$event->status}!");
         }
 
-        if (!$event->isUserSubscribed($userId)) {
-            throw new Exception("You are not registered for this event!");
+        if (! $event->isUserSubscribed($authUserId)) {
+            throw new Exception('You are not registered for this event!');
         }
 
-        return $this->repository->unsubscribe($eventId, $userId);
+        return $this->repository->unsubscribe($eventId, $authUserId);
     }
 }

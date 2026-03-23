@@ -17,22 +17,22 @@ class SubscriptionRepository implements SubscriptionRepositoryContract
             ->get();
     }
 
-    public function subscribe(int $eventId, int $userId)
+    public function subscribe(int $eventId, int $authUserId)
     {
         return $this->eventUser->withTrashed()->updateOrCreate(
-            ['event_id' => $eventId, 'user_id' => $userId],
+            ['event_id' => $eventId, 'user_id' => $authUserId],
             [
                 'deleted_at' => null,
-                'canceled_by' => null
+                'canceled_by' => null,
             ]
         );
     }
 
-    public function unsubscribe(int $eventId, int $userId)
+    public function unsubscribe(int $eventId, int $authUserId)
     {
         $subscription = $this->eventUser
             ->where('event_id', $eventId)
-            ->where('user_id', $userId)
+            ->where('user_id', $authUserId)
             ->first();
 
         if ($subscription) {

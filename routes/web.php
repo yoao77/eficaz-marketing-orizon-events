@@ -30,4 +30,4 @@ Route::middleware('auth')->group(function () {
     Route::post('events/{event}/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('events.unsubscribe');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

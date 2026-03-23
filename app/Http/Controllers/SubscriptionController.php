@@ -10,14 +10,15 @@ class SubscriptionController extends Controller
         private SubscriptionService $service
     ) {}
 
-    public function getSubscribers(int $id) {
-        return $this->service->getSubscribers($id, auth()->id());
+    public function getSubscribers(int $eventId)
+    {
+        return $this->service->getSubscribers($eventId, auth()->id());
     }
 
-    public function subscribe(int $id)
+    public function subscribe(int $eventId)
     {
         try {
-            $this->service->subscribe($id, auth()->id());
+            $this->service->subscribe($eventId, auth()->id());
 
             return redirect()->back()->with('success', 'Subscription confirmed!');
         } catch (\Exception $e) {
@@ -25,10 +26,10 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function unsubscribe(int $id)
+    public function unsubscribe(int $eventId)
     {
         try {
-            $this->service->unsubscribe($id, auth()->id());
+            $this->service->unsubscribe($eventId, auth()->id());
 
             return redirect()->back()->with('success', 'Your subscription has been successfully cancelled!');
         } catch (\Exception $e) {
