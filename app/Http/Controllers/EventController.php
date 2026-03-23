@@ -55,6 +55,13 @@ class EventController extends Controller
             ->withErrors(['error' => 'Could not create event']);
     }
 
+    public function show(int $id)
+    {
+        $event = $this->service->show($id);
+
+        return new EventResource($event);
+    }
+
     public function update(UpdateEventRequest $request, int $id)
     {
         try {

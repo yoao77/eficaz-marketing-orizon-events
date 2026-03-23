@@ -22,5 +22,5 @@ class EventController extends Controller
         $events = $this->service->index($filters, $authUserId, $perPage);
 
         return EventResource::collection($events);
-    }
+    } 
 }
