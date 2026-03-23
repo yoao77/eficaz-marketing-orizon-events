@@ -19,12 +19,14 @@ class Event extends Model
         'description',
         'location',
         'event_datetime',
+        'end_date',
         'people_capacity',
-        'status',
+        'status'
     ];
 
     protected $casts = [
-        'event_datetime' => 'datetime',
+        'event_datetime' => 'datetime:d/m/Y H:i',
+        'end_date' => 'datetime:d/m/Y H:i',
         'people_capacity' => 'integer',
     ];
 
