@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Contracts;
+
+interface EventRepositoryContract
+{
+    public function index(array $filters, ?int $authUserId, int $perPage);
+
+    public function store(array $data, int $authUserId);
+
+    public function update(array $data, int $id, int $authUserId);
+
+    public function destroy(int $id, int $authUserId);
+
+    public function findByIdWithCount(int $id);
+
+    public function findById(int $id);
+}
