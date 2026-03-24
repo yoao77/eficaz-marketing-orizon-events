@@ -44,4 +44,34 @@ class SubscriptionIntegrationTest extends TestCase
             session('errors')->get('error')[0]
         );
     }
+
+    public function test_prevent_registration_in_full_event(): void
+    {
+        $event = Event::factory()->create([
+            'status' => 'active',
+            'people_capacity' => 1,
+        ]);
+
+        $firstUser = User::factory()->create();
+        $event->participants()->attach($firstUser->id);
+
+        $testUser = User::factory()->create();
+
+        $response = $this->actingAs($testUser)
+            ->post(route('events.subscribe', $event->id));
+
+        $response->assertSessionHasErrors(['error']);
+
+        $this->assertEquals(
+            'The event is full!',
+            session('errors')->get('error')[0]
+        );
+
+        $this->assertDatabaseMissing('event_user', [
+            'event_id' => $event->id,
+            'user_id' => $testUser->id,
+        ]);
+
+        dd(\Illuminate\Support\Facades\DB::table('event_user')->get()->toArray());
+    }
 }
