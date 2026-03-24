@@ -48,6 +48,8 @@ docker exec -it orizon_events_app bash
 
 # Instalar as dependências do projeto
 composer install
+npm run build
+npm install
 
 # Configurar o arquivo de ambiente e gerar a chave
 cp .env.example .env
@@ -55,6 +57,7 @@ php artisan key:generate
 
 # Ajustar permissões (Necessário para WSL2 ou Linux)
 chmod -R 775 storage bootstrap/cache
+chmod -R 777 storage bootstrap/cache
 
 # Rodar as migrações e popular o banco de dados
 php artisan migrate
